@@ -36,7 +36,7 @@ class Users(Base):
 
 
 class UserImage(Base):
-    __tablename__ = 'utilisateur_images'
+    __tablename__ = 'utilisateur_image'
 
     id = Column(Integer, primary_key=True)
     photo = Column(String)

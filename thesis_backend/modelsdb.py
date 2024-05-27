@@ -7,22 +7,9 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class Departement(Base):
-    __tablename__ = 'departement'
-    __table_args__ = {'schema': 'public'}
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".departement_id_seq'::regclass)"))
-    nom_departement = Column(String(150), nullable=False)
 
 
-class Role(Base):
-    __tablename__ = 'role'
-    __table_args__ = {'schema': 'public'}
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".role_id_seq'::regclass)"))
-    nom_role = Column(String(100), nullable=False, unique=True)
-
-    utilisateur = relationship('Utilisateur', secondary='public.utilisateur_role')
 
 
 class Salle(Base):
@@ -33,52 +20,14 @@ class Salle(Base):
     nom = Column(String(150), nullable=False)
 
 
-class Utilisateur(Base):
-    __tablename__ = 'utilisateur'
-    __table_args__ = {'schema': 'public'}
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".utilisateur_id_seq'::regclass)"))
-    nom = Column(String(150), nullable=False)
-    prenom = Column(String(150), nullable=False, server_default=text("false"))
-    email = Column(String(150), nullable=False, unique=True)
-    date_naissance = Column(Date)
-    mot_de_passe = Column(String(255), nullable=False)
-    sexe = Column(String(50))
-    isAdmin = Column(Boolean, nullable=False)
 
 
-class Enseignant(Base):
-    __tablename__ = 'enseignant'
-    __table_args__ = {'schema': 'public'}
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".enseignant_id_seq'::regclass)"))
-    id_utilisateur = Column(ForeignKey('public.utilisateur.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
-    id_departement = Column(ForeignKey('public.departement.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
-
-    departement = relationship('Departement')
-    utilisateur = relationship('Utilisateur')
 
 
-class Filiere(Base):
-    __tablename__ = 'filiere'
-    __table_args__ = {'schema': 'public'}
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".filiere_id_seq'::regclass)"))
-    nom_filiere = Column(String(255), nullable=False)
-    id_departement = Column(ForeignKey('public.departement.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
-
-    departement = relationship('Departement')
 
 
-class Image(Base):
-    __tablename__ = 'image'
-    __table_args__ = {'schema': 'public'}
 
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".image_id_seq'::regclass)"))
-    photo = Column(Text)
-    id_utilisateur = Column(ForeignKey('public.utilisateur.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
 
-    utilisateur = relationship('Utilisateur')
 
 
 class Message(Base):
@@ -116,16 +65,6 @@ t_utilisateur_role = Table(
 )
 
 
-class Etudiant(Base):
-    __tablename__ = 'etudiant'
-    __table_args__ = {'schema': 'public'}
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".etudiant_id_seq'::regclass)"))
-    id_utilisateur = Column(ForeignKey('public.utilisateur.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
-    id_filiere = Column(ForeignKey('public.filiere.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
-
-    filiere = relationship('Filiere')
-    utilisateur = relationship('Utilisateur')
 
 
 class Jury(Base):
@@ -173,6 +112,7 @@ class MembresEquipe(Base):
 
     id = Column(Integer, primary_key=True, server_default=text("nextval('\"public\".membres_equipe_id_seq'::regclass)"))
     id_equipe = Column(ForeignKey('public.equipe.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
+    id_etudiant = Column(ForeignKey('public.etudiant.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
     id_etudiant = Column(ForeignKey('public.etudiant.id', ondelete='SET NULL', onupdate='CASCADE', match='FULL'))
 
     equipe = relationship('Equipe')
