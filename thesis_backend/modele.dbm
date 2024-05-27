@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="467,196" last-zoom="0.95" max-obj-count="19"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="utilisateur" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="420" y="40"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="varchar" length="200"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="role" not-null="true" default-value="'Etudiant'">
+		<type name="varchar" length="50"/>
+		<comment><![CDATA[Administrateur, Etudiant, Enseignant]]></comment>
+	</column>
+	<column name="created_at" not-null="true" default-value="now()">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="is_actif" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="user_pk" type="pk-constr" table="public.utilisateur">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="etudiant" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="200" y="600"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="matricule" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="nom" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="date_naissance">
+		<type name="date" length="0"/>
+	</column>
+	<column name="genre">
+		<type name="varchar" length="20"/>
+	</column>
+	<constraint name="etudiant_pk" type="pk-constr" table="public.etudiant">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_filiere" index="6"/>
+		<object name="id_utilisateur" index="2"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="etudiant_uq" index="2"/>
+		<object name="filiere_fk" index="3"/>
+		<object name="utilisateur_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="departement" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1120" y="720"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="libelle" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="departement_pk" type="pk-constr" table="public.departement">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="enseignant" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="920" y="0"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="grade" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="specialite" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="nom" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="prenoms" not-null="true">
+		<type name="varchar" length="150"/>
+	</column>
+	<constraint name="enseignant_pk" type="pk-constr" table="public.enseignant">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="memoire" layers="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="900" y="1080"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="theme" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="lieu_stage">
+		<type name="varchar" length="200"/>
+	</column>
+	<column name="adresse_stage">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="contact_stage">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="is_theme_valide" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="is_pret_pour_soutenir" not-null="true" default-value="false">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="id_maitre_memoire">
+		<type name="varchar" length="12"/>
+	</column>
+	<constraint name="memoire_pk" type="pk-constr" table="public.memoire">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="jury" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1440" y="380"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="role" not-null="true" default-value="'Président'">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Président, Rapporteur, Examinateur]]></comment>
+	</column>
+	<constraint name="jury_pk" type="pk-constr" table="public.jury">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="soutenance" layers="0" collapse-mode="2" pagination="true" attribs-page="0" ext-attribs-page="0" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1540" y="960"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="heure">
+		<type name="time" length="0"/>
+	</column>
+	<column name="decision_du_jury">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Accepté, Refusé]]></comment>
+	</column>
+	<column name="id_memorant" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="soutenance_pk" type="pk-constr" table="public.soutenance">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_salle" index="4"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="salle_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="salle" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1880" y="580"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="intitule" not-null="true">
+		<type name="varchar" length="150"/>
+	</column>
+	<constraint name="salle_pk" type="pk-constr" table="public.salle">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="etudiant_est_un_utilisateur" type="rel11" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#1f40da"
+	 src-table="public.utilisateur"
+	 dst-table="public.etudiant"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="enseignant_est_un_utilisateur" type="rel11" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#e5fb30"
+	 src-table="public.utilisateur"
+	 dst-table="public.enseignant"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<table name="filiere" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="580" y="340"/>
+	<column name="id" not-null="true" default-value="encode(gen_random_bytes(6), 'hex')">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="nom" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="filiere_pk" type="pk-constr" table="public.filiere">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="salle_has_many_soutenance" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#5db332"
+	 src-table="public.salle"
+	 dst-table="public.soutenance"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="memoire_has_one_soutenance" type="rel11" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#7ac2b5"
+	 src-table="public.soutenance"
+	 dst-table="public.memoire"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-22.1967" y="-22.8512"/>
+	</label>
+</relationship>
+
+<relationship name="enseignant_peut_appartenir_a_many_jury" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#84c4f8"
+	 src-table="public.enseignant"
+	 dst-table="public.jury"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="soutenance_has_many_membre_jury" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#9c5daf"
+	 src-table="public.soutenance"
+	 dst-table="public.jury"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-34.8217" y="-40.9265"/>
+	</label>
+</relationship>
+
+<relationship name="filiere_has_many_etudiant" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#9f5da1"
+	 src-table="public.filiere"
+	 dst-table="public.etudiant"
+	 src-required="false" dst-required="false"/>
+
+<table name="stage" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="260" y="1140"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="theme" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="stage_pk" type="pk-constr" table="public.stage">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="memorant" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="720"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="etu1" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="etu2" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="type" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="memorant_pk" type="pk-constr" table="public.memorant">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="maitre_memoire" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1580" y="60"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="12"/>
+	</column>
+	<constraint name="maitre_memoire_pk" type="pk-constr" table="public.maitre_memoire">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="memorant_has_many_stage" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#63b920"
+	 src-table="public.memorant"
+	 dst-table="public.stage"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="memorant_has_many_memoire" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#b6ca5e"
+	 src-table="public.memorant"
+	 dst-table="public.memoire"
+	 src-required="false" dst-required="false"/>
+
+<table name="chef_departement" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="980" y="360"/>
+	<column name="id" not-null="true">
+		<type name="varchar" length="12"/>
+	</column>
+	<column name="id_departement" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<relationship name="chef_departement_inherits_enseignant" type="relgen" layers="0"
+	 pk-pattern="{dt}_pk"
+	 custom-color="#818e45"
+	 src-table="public.chef_departement"
+	 dst-table="public.enseignant"/>
+
+<relationship name="maitre_memoire_inherits_enseignant" type="relgen" layers="0"
+	 pk-pattern="{dt}_pk"
+	 custom-color="#e5c6ab"
+	 src-table="public.maitre_memoire"
+	 dst-table="public.enseignant"/>
+
+<relationship name="departement_has_many_filiere" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#be18cf"
+	 src-table="public.departement"
+	 dst-table="public.filiere"
+	 src-required="false" dst-required="false"/>
+
+<table name="evaluation" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1880" y="1340"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="commentaire">
+		<type name="varchar" length="255"/>
+	</column>
+</table>
+
+<table name="proces_verbaux" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1440" y="1400"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="contenu" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+</table>
+
+<table name="notification" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1112.73" y="1516.36"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="message" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+</table>
+
+<constraint name="fk_memorant" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.memorant" table="public.soutenance">
+	<columns names="id_memorant" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_etu1" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.etudiant" table="public.memorant">
+	<columns names="etu1" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_etu2" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.etudiant" table="public.memorant">
+	<columns names="etu2" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_depart" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.departement" table="public.chef_departement">
+	<columns names="id_departement" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_chef_departement_departement" type="relfk" layers="0"
+	 src-table="public.chef_departement"
+	 dst-table="public.departement" reference-fk="fk_depart"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_memorant_etudiant" type="relfk" layers="0"
+	 src-table="public.memorant"
+	 dst-table="public.etudiant" reference-fk="fk_etu1"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_memorant_etudiant1" type="relfk" layers="0"
+	 src-table="public.memorant"
+	 dst-table="public.etudiant" reference-fk="fk_etu2"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_soutenance_memorant" type="relfk" layers="0"
+	 src-table="public.soutenance"
+	 dst-table="public.memorant" reference-fk="fk_memorant"
+	 src-required="false" dst-required="true"/>
+
+</dbmodel>
