@@ -2,6 +2,7 @@ from sqlalchemy import func, Column, Integer, String, DateTime,text, Time, Boole
     ForeignKey
 from sqlalchemy.orm import relationship
 from database import Base
+from sqlalchemy import UniqueConstraint
 
 
 class Users(Base):
@@ -31,9 +32,13 @@ class Users(Base):
         lazy='joined'
     )
 
+    __table_args__ = (
+        UniqueConstraint('id', 'role_id', name='unique_user_role'),
+    )
+    
     def __repr__(self) -> str:
         return f'User: {self.username}'
-
+    
 
 class UserImage(Base):
     __tablename__ = 'utilisateur_image'

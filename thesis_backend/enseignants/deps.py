@@ -27,31 +27,31 @@ async def get_presenter(session=Depends(get_db_session)):
     yield presenter
 
 
-async def get_enseignant_user(enseignant_id: int, user_id: int) -> dict:
-    return {'enseignant_id': enseignant_id, 'user_id': user_id}
+async def get_enseignant_user(enseignant_id: int, utilisateur_id: int) -> dict:
+    return {'enseignant_id': enseignant_id, 'utilisateur_id': utilisateur_id}
 
 
-async def get_limit_offset_user(user_id: int, limit: int, offset: int) -> dict:
-    return {'user_id': user_id, 'limit': limit, 'offset': offset}
+async def get_limit_offset_user(utilisateur_id: int, limit: int, offset: int) -> dict:
+    return {'utilisateur_id': utilisateur_id, 'limit': limit, 'offset': offset}
 
 
-async def get_slug_user(enseignant_slug: str, user_id: int) -> dict:
-    return {'enseignant_slug': enseignant_slug, 'user_id': user_id}
+async def get_slug_user(enseignant_slug: str, utilisateur_id: int) -> dict:
+    return {'enseignant_slug': enseignant_slug, 'utilisateur_id': utilisateur_id}
 
 
 async def get_updated_data_slug_user(updated_data: UpdateEnseignantSchema,
                                          enseignant_slug: str,
-                                         user_id: int) -> dict:
+                                         utilisateur_id: int) -> dict:
     return {
         'updated_data': updated_data,
         'enseignant_slug': enseignant_slug,
-        'user_id': user_id
+        'utilisateur_id': utilisateur_id
     }
 
 
-async def get_create_data_user(user_id: int,
+async def get_create_data_user(utilisateur_id: int,
                                    enseignant_data: CreateEnseignantSchema) -> dict:
-    return {'user_id': user_id, 'enseignant_data': enseignant_data}
+    return {'utilisateur_id': utilisateur_id, 'enseignant_data': enseignant_data}
 
 
 response_data = {

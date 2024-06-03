@@ -1,7 +1,9 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
+from requests import session
 
+from database import get_db_session
 from users.auth.email_service import EmailService
 from users.auth.password_service import PasswordService
 from users.auth.repositories import UserRepositories
@@ -9,6 +11,7 @@ from users.auth.token_service import TokenService
 from .schemas import CreateUserSchema, BaseUserAccountSchema, ResetPasswordConfirmSchema, ResetPasswordRequestSchema
 from .presenter import UserPresenter, TokenPresenter
 from .deps import get_option_presenter, response_data, get_token_service_data
+from sqlalchemy.ext.asyncio import  AsyncSession
 
 auth_controllers = APIRouter(prefix='/auth', tags=['users'])
 
@@ -20,6 +23,8 @@ async def sign_up(
 ):
     return await UserPresenter(**option_presenter) \
         .sign_up(**users_data.dict())
+
+
 
 
 @auth_controllers.post(**response_data.get('login'))

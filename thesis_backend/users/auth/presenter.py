@@ -1,10 +1,25 @@
 from dataclasses import dataclass
+
+from database import AsyncSessionLocal
+from enseignants.interfaces.repositories_interface import EnseignantRepositoriesInterface
+from enseignants.presenter import EnseignantPresenter
+from enseignants.schemas import CreateEnseignantSchema
+from etudiants.interfaces.repositories_interface import EtudiantRepositoriesInterface
+from etudiants.presenter import EtudiantPresenter
+from etudiants.schemas import CreateEtudiantSchema
+from users.auth.repositories import UserRepositories
 from .interfaces.repositories_interface import UserRepositoriesInterface
 from .interfaces.password_service_interface import PasswordServiceInterface
 from .interfaces.token_service_interface import TokenServiceInterface
 from .interfaces.email_service_interface import EmailServiceInterface
+from etudiants.repositories import EtudiantRepositories, EtudiantRepositories
+from enseignants.repositories import EnseignantRepositories
 from .exceptions import AuthExceptions
 from .mixins import CreateTokenMixin
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import  AsyncSession
+
+
 
 
 @dataclass
@@ -15,12 +30,14 @@ class TokenPresenter(CreateTokenMixin):
         return await self.create_token(
             username=username, token_service=self.token_service)
 
-
+    
+    
 @dataclass
 class UserPresenter(CreateTokenMixin):
     repository: UserRepositoriesInterface
+    etudiant_repository: EtudiantRepositoriesInterface
+    enseignant_repository: EnseignantRepositoriesInterface
     password_service: PasswordServiceInterface
-
     token_service: TokenServiceInterface
     email_service: EmailServiceInterface 
 
@@ -45,6 +62,8 @@ class UserPresenter(CreateTokenMixin):
             .hashed_password(password=password)
         await self.repository.save_user(username=username, password=_password, nom=nom, prenoms=prenoms, role_id=role_id)
 
+    
+        
     async def request_password_reset(self, username: str):
         user = await self.repository.receive_user_by_username(username=username)
         if not user:

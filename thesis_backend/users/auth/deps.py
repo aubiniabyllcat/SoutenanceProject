@@ -1,4 +1,8 @@
 from fastapi import Depends, status
+
+from enseignants.interfaces.repositories_interface import EnseignantRepositoriesInterface
+from etudiants.interfaces.repositories_interface import EtudiantRepositoriesInterface
+from permissions import UserPermission
 from .schemas import TokenSchema
 from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,12 +14,20 @@ from .email_service import EmailService
 from settings import get_settings
 password_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
+async def get_user(
+        user=Depends(UserPermission(token_service=TokenService())
+                         .get_current_user)
+):
+    yield user
+
 
 async def get_option_presenter(session: AsyncSession = Depends(get_db_session)
         ):
     settings = get_settings()
     yield {
         'repository': UserRepositories(session=session),
+        'etudiant_repository': EtudiantRepositoriesInterface,
+        'enseignant_repository': EnseignantRepositoriesInterface,
         'password_service': PasswordService(context=password_context),
         'token_service': TokenService(),
         'email_service': EmailService(

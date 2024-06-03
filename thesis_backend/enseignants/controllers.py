@@ -20,10 +20,9 @@ async def get_enseignants(
 @enseignant_controllers.post(**response_data.get('create_enseignants'))
 async def create_enseignant(
         enseignant_data: CreateEnseignantSchema,
-        user=Depends(get_user),
         presenter: EnseignantPresenter = Depends(get_presenter),
 ):
-    data: dict = await get_create_data_user(user.id, enseignant_data)
+    data: dict = await get_create_data_user( enseignant_data)
     return await presenter.create_enseignant(**data)
 
 @enseignant_controllers.delete(**response_data.get('delete_enseignants'))

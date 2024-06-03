@@ -28,8 +28,11 @@ class UpdateUserSchema(BaseModel):
 
 class UserSchema(UpdateUserSchema):
     id: int
+    nom: str
+    prenoms: str
     created: datetime
     is_active: bool = Field(True)
+    is_admin: bool = Field(False)
     images: list[UserImageSchema]
 
     class Config:

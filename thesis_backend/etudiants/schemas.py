@@ -6,7 +6,6 @@ from users.profile.schemas import UserSchema
 
 class CreateEtudiantSchema(BaseModel):
     matricule: str = Field(max_length=200)
-    #filiere: str | None = Field(None, max_length=255)
     filiere_id: int 
     annee_id: int
 
@@ -21,7 +20,7 @@ class UpdateEtudiantSchema(BaseModel):
 
 class EtudiantSchema(CreateEtudiantSchema):
     id: int
-    user_id: int
+    utilisateur_id: int
     slug: str | None
     created: datetime
 

@@ -5,20 +5,20 @@ from ..schemas import CreateEnseignantSchema, UpdateEnseignantSchema
 class EnseignantRepositoriesInterface(ABC):
 
     @abstractmethod
-    async def get_enseignants(self, user_id: int, limit: int, offset: int):
+    async def get_enseignants(self, utilisateur_id: int, limit: int, offset: int):
         pass
 
     @abstractmethod
     async def create_enseignant(
-            self, user_id: int, enseignant_data: CreateEnseignantSchema):
+            self, utilisateur_id: int, enseignant_data: CreateEnseignantSchema):
         pass
 
     @abstractmethod
-    async def delete_enseignant(self, user_id: int, enseignant_slug: str):
+    async def delete_enseignant(self, utilisateur_id: int, enseignant_slug: str):
         pass
 
     async def update_enseignant(
-            self, user_id: int, enseignant_slug: str,
+            self, utilisateur_id: int, enseignant_slug: str,
             updated_data: UpdateEnseignantSchema
     ):
         pass
