@@ -4,7 +4,6 @@ from users.auth.controllers import auth_controllers
 from users.profile.controllers import profile_controllers
 from etudiants.controllers import etudiant_controllers
 from enseignants.controllers import enseignant_controllers
-from ecoles.controllers import ecole_controllers
 import uvicorn
 from settings import get_settings
 
@@ -34,7 +33,6 @@ app.include_router(auth_controllers)
 app.include_router(profile_controllers)
 app.include_router(etudiant_controllers)
 app.include_router(enseignant_controllers)
-app.include_router(ecole_controllers)
 #app.include_router(enseignant_controllers)
 
 def run_server():

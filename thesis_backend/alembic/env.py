@@ -7,7 +7,7 @@ from alembic import context
 from users.auth import models as auth_models
 from etudiants import models as etudiants_models
 from enseignants import models as enseignants_models
-from ecoles import models as ecoles_models
+
 
 
 # this is the Alembic Config object, which provides
@@ -26,7 +26,7 @@ if config.config_file_name is not None:
 target_metadata = auth_models.Base.metadata
 target_metadata = etudiants_models.Base.metadata
 target_metadata = enseignants_models.Base.metadata
-target_metadata = ecoles_models.Base.metadata
+
 
 
 # other values from the config, defined by the needs of env.py,

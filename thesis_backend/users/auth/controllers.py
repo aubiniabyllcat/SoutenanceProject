@@ -1,7 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from requests import session
 
 from database import get_db_session
 from users.auth.email_service import EmailService
@@ -20,8 +19,9 @@ auth_controllers = APIRouter(prefix='/auth', tags=['users'])
 async def sign_up(
         users_data: CreateUserSchema,
         option_presenter=Depends(get_option_presenter),
+        session: AsyncSession = Depends(get_db_session)
 ):
-    return await UserPresenter(**option_presenter) \
+    return await UserPresenter(session=session,**option_presenter) \
         .sign_up(**users_data.dict())
 
 
@@ -40,6 +40,7 @@ async def login(
 
 @auth_controllers.post(**response_data.get('create_token'))
 async def get_token(
+    
         username: BaseUserAccountSchema,
         token_data=Depends(get_token_service_data)
 ):

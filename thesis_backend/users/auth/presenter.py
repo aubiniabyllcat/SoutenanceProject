@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import logging
+import traceback
 
 from database import AsyncSessionLocal
 from enseignants.interfaces.repositories_interface import EnseignantRepositoriesInterface
@@ -34,9 +36,10 @@ class TokenPresenter(CreateTokenMixin):
     
 @dataclass
 class UserPresenter(CreateTokenMixin):
+    session: AsyncSession
     repository: UserRepositoriesInterface
-    etudiant_repository: EtudiantRepositoriesInterface
-    enseignant_repository: EnseignantRepositoriesInterface
+    etudiant_repository: EtudiantRepositoriesInterface 
+    enseignant_repository: EnseignantRepositoriesInterface 
     password_service: PasswordServiceInterface
     token_service: TokenServiceInterface
     email_service: EmailServiceInterface 
@@ -55,12 +58,43 @@ class UserPresenter(CreateTokenMixin):
         return await self.create_token(
             username=user.username, token_service=self.token_service)
 
-    async def sign_up(self, username: str, password: str, nom: str ,prenoms: str, role_id: int):
-        if await self.repository.receive_user_by_username(username=username):
-            raise AuthExceptions().username_exists
-        _password = await self.password_service \
-            .hashed_password(password=password)
-        await self.repository.save_user(username=username, password=_password, nom=nom, prenoms=prenoms, role_id=role_id)
+    async def sign_up(self, username: str, password: str, nom: str, prenoms: str, role_id: int, etudiant_data: CreateEtudiantSchema = None, enseignant_data: CreateEnseignantSchema = None):
+        utilisateur_id = None
+        try:
+            # Vérifier si le nom d'utilisateur existe déjà
+            if await self.repository.receive_user_by_username(username=username):
+                raise AuthExceptions.username_exists
+            
+            # Hacher le mot de passe
+            _password = await self.password_service.hashed_password(password=password)
+            
+            # Sauvegarder l'utilisateur et obtenir l'ID utilisateur
+            utilisateur_id = await self.repository.save_user(username=username, password=_password, nom=nom, prenoms=prenoms, role_id=role_id)
+            
+            # Créer les données associées en fonction du rôle
+            if etudiant_data and role_id == 1:  
+                await self.etudiant_repository.create_etudiant(utilisateur_id=utilisateur_id, etudiant_data=etudiant_data)
+            elif enseignant_data and role_id == 2:  # Rôle 'enseignant'
+                await self.enseignant_repository.create_enseignant(utilisateur_id=utilisateur_id, enseignant_data=enseignant_data)
+            
+            # Valider la transaction
+            await self.session.commit()
+        
+        except Exception as e:
+            # Log de l'erreur et annulation de la transaction
+            logging.error("Une erreur s'est produite lors de l'inscription : %s", e)
+            logging.debug("Utilisateur ID: %s", utilisateur_id)
+            logging.debug("Role ID: %s", role_id)
+            logging.debug("Traceback: %s", traceback.format_exc())
+            
+            # Annuler la transaction en cas d'erreur
+            await self.session.rollback()
+            
+            # Propager l'exception
+            raise e
+        else:
+            # Commit the transaction if no error
+            await self.session.commit()
 
     
         
