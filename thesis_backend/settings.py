@@ -1,7 +1,5 @@
 from functools import lru_cache
-
-from pydantic import BaseSettings
-
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     host: str = "localhost"
@@ -26,7 +24,6 @@ class Settings(BaseSettings):
 
     elastic_host: str = "localhost:9200"
 
-
     # Adding SMTP settings
     smtp_server: str
     smtp_port: int
@@ -34,11 +31,9 @@ class Settings(BaseSettings):
     smtp_password: str
     from_email: str
 
-
     class Config:
         env_file = '.env'
-        env_file_encoding = 'utf-8'
-
+        env_file_encoding='utf-8'
 
 @lru_cache
 def get_settings() -> Settings:
