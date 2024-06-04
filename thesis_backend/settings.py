@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     secret_key: str = "c670b50eb5a1f2822d6ff24ab880a894f20a3606af024886cd04b97ed1fc08e7fb71d42cba0e1aa7ffa2ecb61066ac64907e"
 
-    db_url: str = "postgresql+asyncpg://postgres:postgres1234@localhost:5432/thesis"
+    db_url: str = "postgresql+asyncpg://postgres:1234@localhost:5432/thesis"
 
     postgres_user: str = "postgres"
     postgres_password: str = "postgres1234"
