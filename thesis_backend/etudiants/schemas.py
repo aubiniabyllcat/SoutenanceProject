@@ -8,6 +8,7 @@ class CreateEtudiantSchema(BaseModel):
     matricule: str = Field(max_length=200)
     filiere_id: int 
     annee_id: int
+    utilisateur_id: int
 
 
 class UpdateEtudiantSchema(BaseModel):
@@ -20,7 +21,6 @@ class UpdateEtudiantSchema(BaseModel):
 
 class EtudiantSchema(CreateEtudiantSchema):
     id: int
-    utilisateur_id: int
     slug: str | None
     created: datetime
 

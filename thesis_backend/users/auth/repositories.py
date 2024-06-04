@@ -24,6 +24,7 @@ class UserRepositories(UserRepositoriesInterface):
         utilisateur_id = result.scalar_one()
         return utilisateur_id
 
+
     async def receive_user_by_username(self, username: str):
         stmt = select(Users).where(Users.username == username)
         result = await self.session.execute(statement=stmt)

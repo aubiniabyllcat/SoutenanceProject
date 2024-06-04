@@ -9,14 +9,14 @@ from .exceptions import EtudiantExceptions
 class EtudiantPresenter:
     repository: EtudiantRepositoriesInterface
 
-    async def get_etudiants(self, utilisateur_id: int, limit: int, offset: int):
-        data = {'utilisateur_id': utilisateur_id, 'limit': limit, 'offset': offset}
+    async def get_etudiants(self, limit: int, offset: int):
+        data = { 'limit': limit, 'offset': offset}
         return await self.repository.get_etudiants(**data)
 
 
     async def create_etudiant(
-            self, utilisateur_id: int, etudiant_data: CreateEtudiantSchema):
-        data = {'utilisateur_id': utilisateur_id, 'etudiant_data': etudiant_data}
+            self, etudiant_data: CreateEtudiantSchema):
+        data = { 'etudiant_data': etudiant_data}
         return await self.repository.create_etudiant(**data)
 
     async def delete_etudiant(self, utilisateur_id: int, etudiant_slug: str):

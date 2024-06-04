@@ -10,11 +10,11 @@ etudiant_controllers = APIRouter(prefix='/etudiants', tags=['etudiants'])
 
 @etudiant_controllers.get(**response_data.get('etudiants'))
 async def get_etudiants(
-        user=Depends(get_user),
+        
         presenter: EtudiantPresenter = Depends(get_presenter),
         limit: int | None = 20, offset: int | None = 0
 ):
-    data: dict = await get_limit_offset_user(user.id, limit, offset)
+    data: dict = await get_limit_offset_user( limit, offset)
     return await presenter.get_etudiants(**data)
 
 @etudiant_controllers.post(**response_data.get('create_etudiants'))

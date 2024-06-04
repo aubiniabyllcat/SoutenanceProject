@@ -26,9 +26,6 @@ class Departement(Base):
 
     id = Column(Integer, primary_key=True)
     nom = Column(String(150), nullable=False)
-    ecole_id = Column(ForeignKey('ecole.id', ondelete='CASCADE'))
-
-    ecole_rel = relationship('Ecole', backref='departement')
     
     def __repr__(self) -> str:
         return f'Departement: {self.nom}'

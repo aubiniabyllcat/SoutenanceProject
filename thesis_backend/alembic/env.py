@@ -1,16 +1,11 @@
 import os
 from logging.config import fileConfig
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool, MetaData
 from alembic import context
 from users.auth import models as auth_models
 from etudiants import models as etudiants_models
 from enseignants import models as enseignants_models
-<<<<<<< HEAD
-
-=======
-from ecoles import models as ecoles_models
-from dotenv import load_dotenv
->>>>>>> bf2b031dd950e179e5f148ad04098051b0ca6f56
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,7 +19,6 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-<<<<<<< HEAD
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
@@ -34,18 +28,6 @@ target_metadata = etudiants_models.Base.metadata
 target_metadata = enseignants_models.Base.metadata
 
 
-=======
-# Create a MetaData instance and merge all the model's metadata
-target_metadata = MetaData()
-for metadata in [
-    auth_models.Base.metadata,
-    etudiants_models.Base.metadata,
-    enseignants_models.Base.metadata,
-    ecoles_models.Base.metadata
-]:
-    for table in metadata.tables.values():
-        table.tometadata(target_metadata)
->>>>>>> bf2b031dd950e179e5f148ad04098051b0ca6f56
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
